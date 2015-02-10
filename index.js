@@ -9,11 +9,11 @@ module.exports = function (opt) {
   if (!opt.ext) opt.ext = '.ect';
   if (!opt.data) opt.data = {};
   if (!opt.outExt) opt.outExt = '.html';
+  if (!opt.cache) opt.cache = true;
 
   return es.map(function (file, callback) {
     //function for compile locals async
     var dataCallback = typeof(opt.data) == 'function' ? opt.data : function (file, cb) {
-      
       process.nextTick(function () {
         cb(opt.data);
       });
@@ -32,7 +32,8 @@ module.exports = function (opt) {
         try {
           var html = ect({
             root: filePath,
-            ext: opt.ext
+            ext: opt.ext,
+            cache: opt.cache
           });
 
           html.render(fileName, data, function (error, html) {
